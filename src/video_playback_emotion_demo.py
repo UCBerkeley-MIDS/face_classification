@@ -4,6 +4,9 @@ import cv2
 from keras.models import load_model
 import numpy as np
 
+#import matplotlib
+#matplotlib.use('agg')
+
 from utils.datasets import get_labels
 from utils.inference import detect_faces
 from utils.inference import draw_text
