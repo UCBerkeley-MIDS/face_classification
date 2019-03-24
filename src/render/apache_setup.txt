@@ -1,0 +1,17 @@
+##Update your local package index:
+sudo apt update
+
+##Install the apache2 package:
+sudo apt install apache2
+
+##Enable traffic on port 80 (normal, unencrypted web traffic):
+sudo ufw allow 'Apache'
+
+##Check with the systemd init system to make sure the service is running:
+sudo systemctl status apache2
+
+##Copy the index.html file to /var/www/html location
+sudo cp index.html /var/www/html/
+
+##Access page using the following url
+http://your_server_ip
