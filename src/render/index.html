@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="refresh" content="5; URL=http://169.62.77.116/">
+    <title>Face Classification Renderer</title>
+    <style>
+      body {
+       background-image:  -webkit-linear-gradient(left, #073277, #b3ffff);
+       background-image:  -o-linear-gradient(left, #073277, #b3ffff);
+       background-image:  linear-gradient(to right, #073277, #b3ffff);
+      }
+      .title {
+        text-align: center;
+        margin-top: 5%;
+        color: white;
+        font-size: 45px;
+      }
+      .pic {
+        display: flex;
+        flex-wrap: no-wrap;
+        justify-content: center;
+        width: 100%;
+        height: auto;
+        padding-top: 5%;
+      }
+      img {
+        width: 450px;
+        height: 300px;
+        border: 1px solid black;
+        margin: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 class="title">Face Classification Demo</h1>
+    <div class="pic" id="container">
+      </div>
+
+  <script>
+    setInterval(function() {
+        var container = document.getElementById('container');
+        var imgElem = document.createElement('img');
+        container.appendChild(imgElem);
+        imgElem.src = 'image.jpg';
+    }, 3000);
+  </script>
+  </body>
+</html>

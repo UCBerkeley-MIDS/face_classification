@@ -17,6 +17,10 @@ from utils.preprocessor import preprocess_input
 
 import argparse
 
+import datetime
+import base64
+import paho.mqtt.publish as publish
+
 # parameters for loading data and images
 detection_model_path = '../trained_models/detection_models/haarcascade_frontalface_default.xml'
 emotion_model_path = '../trained_models/emotion_models/fer2013_mini_XCEPTION.102-0.66.hdf5'
@@ -42,9 +46,11 @@ def main():
                                      prog='video_playback_emotion_demo.py')
     parser.add_argument("-f", "--file", type=str, help='video file', default='../w251demo/afew_train_angry.avi')
     args = parser.parse_args()
+    video_file=args.file
 
     cv2.namedWindow('window_frame')
-    video_capture = cv2.VideoCapture(args.file)
+    video_capture = cv2.VideoCapture(video_file)
+    frame_count = 0
     while (video_capture.isOpened()):
         bgr_image = video_capture.read()[1]
         gray_image = cv2.cvtColor(bgr_image, cv2.COLOR_BGR2GRAY)
@@ -93,6 +99,20 @@ def main():
             draw_bounding_box(face_coordinates, rgb_image, color)
             draw_text(face_coordinates, rgb_image, emotion_mode,
                       color, 0, -45, 1, 1)
+                      
+            print("*********************** START PUBLISHING ***********************")
+            # Create JSON string
+            str_ts = str(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+            str_classify = "{video_file: %s, frame_number: %s, emotion_probability: %s, emotion_text: %s, timestamp: %s}"%(video_file, frame_count, emotion_probability, emotion_text, str_ts)
+            print("Classification String: ", str_classify)
+            # Publish Image to MQTT
+            encode_im = cv2.imencode(".jpg", rgb_image)[1].tostring()
+            encode64 = base64.b64encode(encode_im)
+            #publish.single(topic="test_ap_mqtt", payload=encode64, hostname="localhost")
+            publish.single(topic="fc_img_mqtt", payload=encode64, hostname="50.23.173.22")
+            publish.single(topic="fc_json_mqtt", payload=str_classify, hostname="50.23.173.22")
+            frame_count += 1
+            print("*********************** END PUBLISHING ***********************")
 
         bgr_image = cv2.cvtColor(rgb_image, cv2.COLOR_RGB2BGR)
         cv2.imshow('window_frame', bgr_image)
