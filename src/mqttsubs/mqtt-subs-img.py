@@ -10,7 +10,7 @@ def on_message(mosq, obj, msg):
    # reconstruct_image(msg.payload)
     img = imread(io.BytesIO(base64.b64decode(msg.payload)))
     cv2_img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
-    cv2.imwrite("/media/nvidia/ssd/Git/project/images2/img.jpg", cv2_img)
+    cv2.imwrite("image.jpg", cv2_img)
     mosq.publish('pong', 'ack', 0)
 
 def on_publish(mosq, obj, mid):
